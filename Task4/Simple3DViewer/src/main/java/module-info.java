@@ -3,6 +3,8 @@ module com.cgvsu {
     requires javafx.fxml;
     requires vecmath;
     requires java.desktop;
+    requires org.testng;
+    requires junit;
 
 
     opens com.cgvsu to javafx.fxml;
