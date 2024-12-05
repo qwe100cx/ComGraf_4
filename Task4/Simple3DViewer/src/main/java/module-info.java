@@ -5,6 +5,7 @@ module com.cgvsu {
     requires java.desktop;
     requires org.testng;
     requires junit;
+    requires org.junit.jupiter.api;
 
 
     opens com.cgvsu to javafx.fxml;

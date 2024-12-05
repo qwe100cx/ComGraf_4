@@ -3,30 +3,34 @@ package com.cgvsu.math.Matrix;
 import com.cgvsu.math.Vector.Vector3f;
 
 public class Matrix4f {
-    public float[][] elements;
+    // Обозначения для элементов матрицы
+    public float m00, m01, m02, m03; // Первая строка
+    public float m10, m11, m12, m13; // Вторая строка
+    public float m20, m21, m22, m23; // Третья строка
+    public float m30, m31, m32, m33; // Четвертая строка
 
     public Matrix4f() {
-        elements = new float[4][4];
         // Инициализация единичной матрицы
-        for (int i = 0; i < 4; i++) {
-            elements[i][i] = 1;
-        }
+        m00 = 1; m01 = 0; m02 = 0; m03 = 0;
+        m10 = 0; m11 = 1; m12 = 0; m13 = 0;
+        m20 = 0; m21 = 0; m22 = 1; m23 = 0;
+        m30 = 0; m31 = 0; m32 = 0; m33 = 1;
     }
 
     // Метод для умножения матрицы на вектор
     public Vector3f multiply(Vector3f v) {
-        float x = elements[0][0] * v.x + elements[0][1] * v.y + elements[0][2] * v.z + elements[0][3];
-        float y = elements[1][0] * v.x + elements[1][1] * v.y + elements[1][2] * v.z + elements[1][3];
-        float z = elements[2][0] * v.x + elements[2][1] * v.y + elements[2][2] * v.z + elements[2][3];
-        return new Vector3f(z, y, x); // Порядок (z, y, x)
+        float x = m00 * v.x + m01 * v.y + m02 * v.z + m03;
+        float y = m10 * v.x + m11 * v.y + m12 * v.z + m13;
+        float z = m20 * v.x + m21 * v.y + m22 * v.z + m23;
+        return new Vector3f(x, y, z); // Порядок (x, y, z)
     }
 
     // Метод для создания матрицы масштабирования
     public static Matrix4f scale(float sx, float sy, float sz) {
         Matrix4f result = new Matrix4f();
-        result.elements[0][0] = sx;
-        result.elements[1][1] = sy;
-        result.elements[2][2] = sz;
+        result.m00 = sx;
+        result.m11 = sy;
+        result.m22 = sz;
         return result;
     }
 
@@ -35,19 +39,19 @@ public class Matrix4f {
         Matrix4f result = new Matrix4f();
         float cos = (float) Math.cos(angle);
         float sin = (float) Math.sin(angle);
-        result.elements[0][0] = cos;
-        result.elements[0][1] = -sin;
-        result.elements[1][0] = sin;
-        result.elements[1][1] = cos;
+        result.m00 = cos;
+        result.m01 = -sin;
+        result.m10 = sin;
+        result.m11 = cos;
         return result;
     }
 
     // Метод для создания матрицы переноса
     public static Matrix4f translate(float tx, float ty, float tz) {
         Matrix4f result = new Matrix4f();
-        result.elements[0][3] = tx;
-        result.elements[1][3] = ty;
-        result.elements[2][3] = tz;
+        result.m03 = tx;
+        result.m13 = ty;
+        result.m23 = tz;
         return result;
     }
 }

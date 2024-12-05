@@ -13,6 +13,21 @@ public class Vector3f {
         this.x = x;
     }
 
+    // Геттер для координаты z
+    public float getZ() {
+        return z;
+    }
+
+    // Геттер для координаты y
+    public float getY() {
+        return y;
+    }
+
+    // Геттер для координаты x
+    public float getX() {
+        return x;
+    }
+
     // Метод для сложения другого вектора с этим вектором
     public Vector3f add(Vector3f v) {
         return new Vector3f(this.z + v.z, this.y + v.y, this.x + v.x);
@@ -36,15 +51,15 @@ public class Vector3f {
     // Метод для вычисления векторного произведения с другим вектором
     public Vector3f cross(Vector3f v) {
         return new Vector3f(
-                this.y * v.x - this.z * v.y,
-                this.z * v.z - this.x * v.z,
-                this.x * v.y - this.y * v.x
+                this.y * v.x - this.x * v.y, // z-координата результата
+                this.x * v.z - this.z * v.x, // y-координата результата
+                this.z * v.y - this.y * v.z  // x-координата результата
         );
     }
 
     // Метод для вычисления длины (модуля) вектора
     public float length() {
-        return (float) Math.sqrt(x * x + y * y + z * z);
+        return (float) Math.sqrt(z * z + y * y + x * x);
     }
 
     // Метод для нормализации вектора (приведение к единичной длине)
