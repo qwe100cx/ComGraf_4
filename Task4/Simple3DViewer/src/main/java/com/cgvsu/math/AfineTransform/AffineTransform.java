@@ -26,7 +26,7 @@ public class AffineTransform {
                         float x = Float.parseFloat(parts[1]);
                         float y = Float.parseFloat(parts[2]);
                         float z = Float.parseFloat(parts[3]);
-                        points3D.add(new Vector3f(z, y, x)); // Обратите внимание на порядок (z, y, x)
+                        points3D.add(new Vector3f()); // Обратите внимание на порядок (z, y, x)
                     }
                 }
             }

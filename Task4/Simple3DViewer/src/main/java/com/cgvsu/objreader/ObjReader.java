@@ -58,9 +58,7 @@ public class ObjReader {
 	protected static Vector3f parseVertex(final ArrayList<String> wordsInLineWithoutToken, int lineInd) {
 		try {
 			return new Vector3f(
-					Float.parseFloat(wordsInLineWithoutToken.get(0)),
-					Float.parseFloat(wordsInLineWithoutToken.get(1)),
-					Float.parseFloat(wordsInLineWithoutToken.get(2)));
+			);
 
 		} catch(NumberFormatException e) {
 			throw new ObjReaderException("Failed to parse float value.", lineInd);
@@ -87,9 +85,7 @@ public class ObjReader {
 	protected static Vector3f parseNormal(final ArrayList<String> wordsInLineWithoutToken, int lineInd) {
 		try {
 			return new Vector3f(
-					Float.parseFloat(wordsInLineWithoutToken.get(0)),
-					Float.parseFloat(wordsInLineWithoutToken.get(1)),
-					Float.parseFloat(wordsInLineWithoutToken.get(2)));
+			);
 
 		} catch(NumberFormatException e) {
 			throw new ObjReaderException("Failed to parse float value.", lineInd);
