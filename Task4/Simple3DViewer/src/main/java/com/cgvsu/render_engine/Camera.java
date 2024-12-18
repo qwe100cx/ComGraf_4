@@ -1,16 +1,16 @@
 package com.cgvsu.render_engine;
 
-import com.cgvsu.math.Vector.Vector3f;
-import com.cgvsu.math.Matrix.Matrix4f;
+import com.cgvsu.math.Matrix4f;
+import com.cgvsu.math.Vector3f;
 
 public class Camera {
 
-    private Vector3f position; // Позиция камеры
-    private Vector3f target;   // Цель камеры
-    private float fov;         // Поле зрения (угол)
-    private float aspectRatio; // Соотношение сторон
-    private float nearPlane;   // Ближняя плоскость отсечения
-    private float farPlane;    // Дальняя плоскость отсечения
+    private Vector3f position;
+    private Vector3f target;
+    private float fov;
+    private float aspectRatio;
+    private float nearPlane;
+    private float farPlane;
 
     public Camera(
             final Vector3f position,
@@ -25,9 +25,6 @@ public class Camera {
         this.aspectRatio = aspectRatio;
         this.nearPlane = nearPlane;
         this.farPlane = farPlane;
-    }
-
-    public Camera(javax.vecmath.Vector3f vector3f, javax.vecmath.Vector3f vector3f1, float fov, int aspectRatio, float nearPlane, int farPlane) {
     }
 
     public void setPosition(final Vector3f position) {
@@ -59,14 +56,10 @@ public class Camera {
     }
 
     public Matrix4f getViewMatrix() {
-        return GraphicConveyor.lookAt(position, target);
+        return GraphicConveyor.lookAt(position, target, new Vector3f(0.0f, 1.0f, 0.0f));
     }
 
     public Matrix4f getProjectionMatrix() {
         return GraphicConveyor.perspective(fov, aspectRatio, nearPlane, farPlane);
-    }
-
-    public void movePosition(javax.vecmath.Vector3f vector3f) {
-        
     }
 }

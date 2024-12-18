@@ -63,4 +63,68 @@ class ObjReaderTest {
             Assertions.assertEquals(expectedError, exception.getMessage());
         }
     }
+
+    @Test
+    public void testToWorldCoordinatesRotation() {
+        // Создаем объект GraphicConveyor и задаем параметры поворота
+        GraphicConveyor graphicConveyor = new GraphicConveyor();
+
+        // Устанавливаем поворот вокруг оси X на 90 градусов
+        graphicConveyor.rotate(90, 0, 0);
+
+        // Входной вектор в локальных координатах (1, 0, 0) - по оси X
+        Vector3f localCoordinates = new Vector3f(1.0f, 0.0f, 0.0f);
+
+        // Преобразуем локальные координаты в мировые
+        Vector3f worldCoordinates = graphicConveyor.toWorldCoordinates(localCoordinates);
+
+        // Ожидаем, что вектор после поворота вокруг оси X на 90 градусов будет (1, 0, 0)
+        // Вектор (1, 0, 0) после поворота на 90 градусов по оси X не изменится
+        Vector3f expectedCoordinates = new Vector3f(1.0f, 0.0f, 0.0f);
+
+        // Проверяем, что результат соответствует ожиданиям
+        Assertions.assertTrue(worldCoordinates.equals(expectedCoordinates));
+    }
+
+    @Test
+    public void testToWorldCoordinatesRotationY() {
+        // Создаем объект GraphicConveyor и задаем параметры поворота
+        GraphicConveyor graphicConveyor = new GraphicConveyor();
+
+        // Устанавливаем поворот вокруг оси Y на 90 градусов
+        graphicConveyor.rotate(0, 90, 0);
+
+        // Входной вектор в локальных координатах (1, 0, 0) - по оси X
+        Vector3f localCoordinates = new Vector3f(1.0f, 0.0f, 0.0f);
+
+        // Преобразуем локальные координаты в мировые
+        Vector3f worldCoordinates = graphicConveyor.toWorldCoordinates(localCoordinates);
+
+        // Ожидаем, что вектор после поворота вокруг оси Y на 90 градусов будет (0, 0, -1)
+        Vector3f expectedCoordinates = new Vector3f(0.0f, 0.0f, -1.0f);
+
+        // Проверяем, что результат соответствует ожиданиям
+        Assertions.assertTrue(worldCoordinates.equals(expectedCoordinates));
+    }
+
+    @Test
+    public void testToWorldCoordinatesRotationZ() {
+        // Создаем объект GraphicConveyor и задаем параметры поворота
+        GraphicConveyor graphicConveyor = new GraphicConveyor();
+
+        // Устанавливаем поворот вокруг оси Z на 90 градусов
+        graphicConveyor.rotate(0, 0, 90);
+
+        // Входной вектор в локальных координатах (1, 0, 0) - по оси X
+        Vector3f localCoordinates = new Vector3f(1.0f, 0.0f, 0.0f);
+
+        // Преобразуем локальные координаты в мировые
+        Vector3f worldCoordinates = graphicConveyor.toWorldCoordinates(localCoordinates);
+
+        // Ожидаем, что вектор после поворота вокруг оси Z на 90 градусов будет (0, 1, 0)
+        Vector3f expectedCoordinates = new Vector3f(0.0f, 1.0f, 0.0f);
+
+        // Проверяем, что результат соответствует ожиданиям
+        Assertions.assertTrue(worldCoordinates.equals(expectedCoordinates));
+    }
 }
