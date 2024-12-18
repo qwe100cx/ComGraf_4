@@ -1,84 +1,119 @@
 package com.cgvsu.render_engine;
 
-import com.cgvsu.math.Vector.Vector2f;
-import com.cgvsu.math.Vector.Vector3f;
-import com.cgvsu.math.Matrix.Matrix4f;
+import com.cgvsu.math.Matrix4f;
+import com.cgvsu.math.Vector2f;
+import com.cgvsu.math.Vector3f;
 
 public class GraphicConveyor {
 
+    private Matrix4f scaleMatrix;
+    private Matrix4f rotateMatrix;
+    private Matrix4f translationMatrix;
 
+    // Хранение углов для вращения
+    private float angleX = 0;
+    private float angleY = 0;
+    private float angleZ = 0;
 
-    public static Matrix4f rotateScaleTranslate() {
-        Matrix4f result = new Matrix4f();
-        // Инициализация единичной матрицы
-        result.m00 = 1; result.m01 = 0; result.m02 = 0; result.m03 = 0;
-        result.m10 = 0; result.m11 = 1; result.m12 = 0; result.m13 = 0;
-        result.m20 = 0; result.m21 = 0; result.m22 = 1; result.m23 = 0;
-        result.m30 = 0; result.m31 = 0; result.m32 = 0; result.m33 = 1;
-        return result;
+    // Конструктор по умолчанию (единичные матрицы)
+    public GraphicConveyor() {
+        this.scaleMatrix = Matrix4f.identity();
+        this.rotateMatrix = Matrix4f.identity();
+        this.translationMatrix = Matrix4f.identity();
     }
 
-    public static Matrix4f lookAt(Vector3f eye, Vector3f target) {
-        return lookAt(eye, target, new Vector3f(0, 1, 0)); // Указание вектора вверх по умолчанию
+    // Применение масштабирования
+    public void scale(float scaleX, float scaleY, float scaleZ) {
+        Matrix4f scalingMatrix = Matrix4f.scaling(scaleX, scaleY, scaleZ);
+        this.scaleMatrix = scalingMatrix;
     }
 
-    public static Matrix4f lookAt(Vector3f eye, Vector3f target, Vector3f up) {
-        Vector3f resultZ = eye.subtract(target).normalize(); // Вектор направления
-        Vector3f resultX = up.cross(resultZ).normalize(); // Вектор вправо
-        Vector3f resultY = resultZ.cross(resultX).normalize(); // Вектор вверх
-
-        Matrix4f result = new Matrix4f();
-        result.m00 = resultX.x; // Используем x, y, z вместо getX(), getY(), getZ()
-        result.m01 = resultY.x;
-        result.m02 = resultZ.x;
-        result.m03 = 0;
-        result.m10 = resultX.y;
-        result.m11 = resultY.y;
-        result.m12 = resultZ.y;
-        result.m13 = 0;
-        result.m20 = resultX.z;
-        result.m21 = resultY.z;
-        result.m22 = resultZ.z;
-        result.m23 = 0;
-        result.m30 = -resultX.dot(eye);
-        result.m31 = -resultY.dot(eye);
-        result.m32 = -resultZ.dot(eye);
-        result.m33 = 1;
-
-        return result;
+    // Применение вращения
+    public void rotate(float deltaX, float deltaY, float deltaZ) {
+        // Обновляем углы
+        this.angleX += deltaX;
+        this.angleY += deltaY;
+        this.angleZ += deltaZ;
+        Matrix4f rotationX = Matrix4f.rotationX((float) Math.toRadians(angleX));
+        Matrix4f rotationY = Matrix4f.rotationY((float) Math.toRadians(angleY));
+        Matrix4f rotationZ = Matrix4f.rotationZ((float) Math.toRadians(angleZ));
+        this.rotateMatrix = this.rotateMatrix.multiply(rotationZ.multiply(rotationY).multiply(rotationX));
     }
 
-    public static Matrix4f perspective(
-            final float fov,
-            final float aspectRatio,
-            final float nearPlane,
-            final float farPlane) {
-        Matrix4f result = new Matrix4f();
-        float tangentMinusOnDegree = (float) (1.0F / Math.tan(Math.toRadians(fov) * 0.5F));
-        result.m00 = tangentMinusOnDegree / aspectRatio;
-        result.m11 = tangentMinusOnDegree;
-        result.m22 = (farPlane + nearPlane) / (farPlane - nearPlane);
-        result.m23 = 1.0F;
-        result.m32 = (2 * nearPlane * farPlane) / (nearPlane - farPlane);
-        return result;
+    // Применение переноса
+    public void translate(float dx, float dy, float dz) {
+        Matrix4f translation = Matrix4f.translation(dx, dy, dz);
+        this.translationMatrix = translation;
     }
 
-    public static Vector3f multiplyMatrix4ByVector3(final Matrix4f matrix, final Vector3f vertex) {
-        final float x = (vertex.x * matrix.m00) + (vertex.y * matrix.m10) + (vertex.z * matrix.m20) + matrix.m30;
-        final float y = (vertex.x * matrix.m01) + (vertex.y * matrix.m11) + (vertex.z * matrix.m21) + matrix.m31;
-        final float z = (vertex.x * matrix.m02) + (vertex.y * matrix.m12) + (vertex.z * matrix.m22) + matrix.m32;
-        final float w = (vertex.x * matrix.m03) + (vertex.y * matrix.m13) + (vertex.z * matrix.m23) + matrix.m33;
+    // Преобразование локальных координат в мировые
+    public Vector3f toWorldCoordinates(Vector3f localCoordinates) {
+        // Возвращаем преобразованные координаты через объединение матриц
+        Matrix4f finalTransformation = this.scaleMatrix
+                .multiply(this.rotateMatrix)
+                .multiply(this.translationMatrix);
 
-        // Нормализуем вектор, если w не равно 0
-        if (w != 0) {
-            return new Vector3f(x / w, y / w, z / w);
-        }
-        return new Vector3f(x, y, z); // В случае, если w равно 0, возвращаем вектор без нормализации
+        return finalTransformation.multiply(localCoordinates);
     }
 
-    public static Vector2f vertexToPoint(final Vector3f vertex, final int width, final int height) {
-        return new Vector2f((vertex.x + 1) * width / 2.0F, (-vertex.y + 1) * height / 2.0F);
+    // Преобразование мировых координат в экранные
+    public Vector2f toScreenCoordinates(Vector3f worldCoordinates, int screenWidth, int screenHeight) {
+        return new Vector2f(
+                worldCoordinates.x * screenWidth / 2.0f + screenWidth / 2.0f,
+                -worldCoordinates.y * screenHeight / 2.0f + screenHeight / 2.0f
+        );
     }
 
+    // Сброс матрицы преобразований к единичной
+    public void resetTransformations() {
+        this.scaleMatrix = Matrix4f.identity();
+        this.rotateMatrix = Matrix4f.identity();
+        this.translationMatrix = Matrix4f.identity();
+    }
 
+    // Получение текущей матрицы преобразований (объединение всех)
+    public Matrix4f getTransformationMatrix() {
+        return this.rotateMatrix.multiply(this.scaleMatrix).multiply(this.translationMatrix);
+    }
+
+    // Метод "смотри на" (матрица вида) для использования Matrix4f
+    public static Matrix4f lookAt(Vector3f position, Vector3f target, Vector3f up) {
+        Vector3f forward = target.subtract(position).normalize(); // Вектор направления камеры
+        Vector3f right = up.cross(forward).normalize();           // Вектор вправо
+        Vector3f newUp = forward.cross(right).normalize();        // Пересчитанный вектор вверх
+
+        // Матрица ориентации камеры
+        Matrix4f orientationMatrix = new Matrix4f(new float[][]{
+                {right.x, newUp.x, -forward.x, 0},
+                {right.y, newUp.y, -forward.y, 0},
+                {right.z, newUp.z, -forward.z, 0},
+                {0, 0, 0, 1}
+        });
+
+        // Матрица переноса камеры
+        Matrix4f translationMatrix = new Matrix4f(new float[][]{
+                {1, 0, 0, -position.x},
+                {0, 1, 0, -position.y},
+                {0, 0, 1, -position.z},
+                {0, 0, 0, 1}
+        });
+
+        return orientationMatrix.multiply(translationMatrix);
+    }
+
+    // Метод для создания перспективной матрицы для использования Matrix4f
+    public static Matrix4f perspective(float fov, float aspectRatio, float nearPlane, float farPlane) {
+        float tanHalfFov = (float) Math.tan(fov / 2.0); // Тангенс половинного угла обзора
+        float range = nearPlane - farPlane;
+
+        // Создаем матрицу перспективы с использованием Matrix4f
+        return new Matrix4f(new float[][]{
+                {1.0f / (aspectRatio * tanHalfFov), 0, 0, 0},
+                {0, 1.0f / tanHalfFov, 0, 0},
+                {0, 0, -(farPlane + nearPlane) / range, 2 * farPlane * nearPlane / range},
+                {0, 0, -1, 0}
+        });
+    }
 }
+
+

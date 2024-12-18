@@ -7,6 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.canvas.Canvas?>
 
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
 <AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.cgvsu.GuiController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
@@ -15,6 +18,9 @@
                     <KeyCodeCombination alt="UP" control="DOWN" meta="UP" shift="UP" shortcut="UP" code="F"/>
                 </accelerator>
             </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#onSaveWithTransformationClick" text="Save with Transformation"/>
+            <MenuItem mnemonicParsing="false" onAction="#onSaveWithoutTransformationClick" text="Save without Transformation"/>
+            <MenuItem mnemonicParsing="false" onAction="#onExitMenuItemClick" text="Exit"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Camera Options">
             <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
@@ -47,6 +53,34 @@
                     <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="S"/>
                 </accelerator>
             </MenuItem>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Transformations">
+            <MenuItem mnemonicParsing="false" onAction="#onScaleUpClick" text="Scale Up">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="U"/>
+                </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#onScaleDownClick" text="Scale Down">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="D"/>
+                </accelerator>
+            </MenuItem>
+            <Menu mnemonicParsing="false" text="Rotate">
+                <MenuItem onAction="#onRotateXPosClick" text="Rotate X (+)"/>
+                <MenuItem onAction="#onRotateXNegClick" text="Rotate X (-)"/>
+                <MenuItem onAction="#onRotateYPosClick" text="Rotate Y (+)"/>
+                <MenuItem onAction="#onRotateYNegClick" text="Rotate Y (-)"/>
+                <MenuItem onAction="#onRotateZPosClick" text="Rotate Z (+)"/>
+                <MenuItem onAction="#onRotateZNegClick" text="Rotate Z (-)"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Translate">
+                <MenuItem onAction="#onTranslateXPosClick" text="Translate X (+)"/>
+                <MenuItem onAction="#onTranslateXNegClick" text="Translate X (-)"/>
+                <MenuItem onAction="#onTranslateYPosClick" text="Translate Y (+)"/>
+                <MenuItem onAction="#onTranslateYNegClick" text="Translate Y (-)"/>
+                <MenuItem onAction="#onTranslateZPosClick" text="Translate Z (+)"/>
+                <MenuItem onAction="#onTranslateZNegClick" text="Translate Z (-)"/>
+            </Menu>
         </Menu>
     </MenuBar>
 
