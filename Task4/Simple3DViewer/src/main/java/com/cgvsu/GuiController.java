@@ -15,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
@@ -49,6 +51,10 @@ public class GuiController {
     private float translateX = 0.0f;
     private float translateY = 0.0f;
     private float translateZ = 0.0f;
+
+    private boolean isMousePressed = false;
+    private double lastMouseX;
+    private double lastMouseY;
 
     @FXML
     AnchorPane anchorPane;
@@ -89,6 +95,41 @@ public class GuiController {
 
         timeline.getKeyFrames().add(frame);
         timeline.play();
+
+        canvas.setOnMousePressed(this::handleMousePressed);
+        canvas.setOnMouseDragged(this::handleMouseDragged);
+        canvas.setOnMouseReleased(this::handleMouseReleased);
+
+    }
+
+    private void handleMousePressed(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            isMousePressed = true;
+            lastMouseX = event.getX();
+            lastMouseY = event.getY();
+        }
+    }
+
+    private void handleMouseDragged(MouseEvent event) {
+        if (isMousePressed) {
+            double deltaX = event.getX() - lastMouseX;
+            double deltaY = event.getY() - lastMouseY;
+
+            // Вращение камеры
+            rotateY += deltaX * 0.000005; // измените множитель для регулировки чувствительности
+            rotateX -= deltaY * 0.000005; // измените множитель для регулировки чувствительности
+
+            graphicConveyor.rotate(rotateX, rotateY, rotateZ);
+
+            lastMouseX = event.getX();
+            lastMouseY = event.getY();
+        }
+    }
+
+    private void handleMouseReleased(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            isMousePressed = false;
+        }
     }
 
     @FXML
