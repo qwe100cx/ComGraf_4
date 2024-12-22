@@ -1,7 +1,7 @@
 package com.cgvsu.math;
 
 public class Matrix3f {
-    private float[][] elements;
+    public float[][] elements;
 
     public Matrix3f() {
         this.elements = new float[3][3];

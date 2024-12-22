@@ -1,7 +1,7 @@
 package com.cgvsu.math;
 
 public class Matrix4f {
-    private float[][] elements;
+    float[][] elements;
 
     public Matrix4f() {
         elements = new float[4][4];
