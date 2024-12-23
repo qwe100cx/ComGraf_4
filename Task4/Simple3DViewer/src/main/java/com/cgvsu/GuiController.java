@@ -56,6 +56,43 @@ public class GuiController {
     private double lastMouseX;
     private double lastMouseY;
 
+    private float initialScaleX = 1.0f;
+    private float initialScaleY = 1.0f;
+    private float initialScaleZ = 1.0f;
+
+    private float initialRotateX = 0.0f;
+    private float initialRotateY = 0.0f;
+    private float initialRotateZ = 0.0f;
+
+    private float initialTranslateX = 0.0f;
+    private float initialTranslateY = 0.0f;
+    private float initialTranslateZ = 0.0f;
+
+    // Метод для сброса трансформаций
+    @FXML
+    public void onResetTransformationsClick(ActionEvent actionEvent) {
+        scaleX = initialScaleX;
+        scaleY = initialScaleY;
+        scaleZ = initialScaleZ;
+
+        rotateX = initialRotateX;
+        rotateY = initialRotateY;
+        rotateZ = initialRotateZ;
+
+        translateX = initialTranslateX;
+        translateY = initialTranslateY;
+        translateZ = initialTranslateZ;
+
+        // Обновляем графический конвейер
+        graphicConveyor.scale(scaleX, scaleY, scaleZ);
+        graphicConveyor.rotate(rotateX, rotateY, rotateZ);
+        graphicConveyor.translate(translateX, translateY, translateZ);
+    }
+
+// Остальные методы остаются без изменений//
+    //
+    /////////////////////
+
     @FXML
     AnchorPane anchorPane;
 
@@ -116,15 +153,22 @@ public class GuiController {
             double deltaY = event.getY() - lastMouseY;
 
             // Вращение камеры
-            rotateY += deltaX * 0.000005; // измените множитель для регулировки чувствительности
-            rotateX -= deltaY * 0.000005; // измените множитель для регулировки чувствительности
+            rotateY += deltaX * 0.00001; // Увеличьте множитель для регулировки чувствительности
+            rotateX -= deltaY * 0.00001; // Увеличьте множитель для регулировки чувствительности
 
+            // Ограничение вращения по оси X, чтобы избежать переворота камеры
+            if (rotateX > 89.0f) rotateX = 89.0f;
+            if (rotateX < -89.0f) rotateX = -89.0f;
+
+            // Обновляем вращение графического конвейера
             graphicConveyor.rotate(rotateX, rotateY, rotateZ);
 
+            // Обновляем последние координаты мыши
             lastMouseX = event.getX();
             lastMouseY = event.getY();
         }
     }
+
 
     private void handleMouseReleased(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
