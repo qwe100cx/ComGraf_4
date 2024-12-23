@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
@@ -45,20 +45,15 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.1</version>
-            <scope>compile</scope>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
-
-
-
-
     </dependencies>
 
     <build>
@@ -72,10 +67,6 @@
                     <target>17</target>
                 </configuration>
             </plugin>
-            <!--
-            for building jar using maven:
-            mvn clean -Dmaven.clean.failOnError=false compile assembly:single -DskipTests=true
-            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -115,8 +106,7 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                    </execution>
-                </executions>
+                    </execution></executions>
             </plugin>
         </plugins>
     </build>
