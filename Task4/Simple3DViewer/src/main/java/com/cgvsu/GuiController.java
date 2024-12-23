@@ -89,9 +89,6 @@ public class GuiController {
         graphicConveyor.translate(translateX, translateY, translateZ);
     }
 
-// Остальные методы остаются без изменений//
-    //
-    /////////////////////
 
     @FXML
     AnchorPane anchorPane;
