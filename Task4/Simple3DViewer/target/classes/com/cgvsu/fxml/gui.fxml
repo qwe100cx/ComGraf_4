@@ -7,9 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.canvas.Canvas?>
 
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ToolBar?>
 <AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="com.cgvsu.GuiController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
@@ -67,8 +64,7 @@
             </MenuItem>
             <Menu mnemonicParsing="false" text="Rotate">
                 <MenuItem onAction="#onRotateXPosClick" text="Rotate X (+)"/>
-                <MenuItem onAction="#onRotateXNegClick" text="Rotate X (-)"/>
-                <MenuItem onAction="#onRotateYPosClick" text="Rotate Y (+)"/>
+                <MenuItem onAction="#onRotateXNegClick" text="Rotate X (-)"/><MenuItem onAction="#onRotateYPosClick" text="Rotate Y (+)"/>
                 <MenuItem onAction="#onRotateYNegClick" text="Rotate Y (-)"/>
                 <MenuItem onAction="#onRotateZPosClick" text="Rotate Z (+)"/>
                 <MenuItem onAction="#onRotateZNegClick" text="Rotate Z (-)"/>
@@ -81,6 +77,7 @@
                 <MenuItem onAction="#onTranslateZPosClick" text="Translate Z (+)"/>
                 <MenuItem onAction="#onTranslateZNegClick" text="Translate Z (-)"/>
             </Menu>
+            <MenuItem mnemonicParsing="false" onAction="#onResetTransformationsClick" text="Reset Transformations"/>
         </Menu>
     </MenuBar>
 
