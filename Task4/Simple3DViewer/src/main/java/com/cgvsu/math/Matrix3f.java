@@ -14,19 +14,17 @@ public class Matrix3f {
         this.elements = elements;
     }
 
-    // Умножение матрицы на вектор-столбец
     public Vector2f multiply(Vector2f vector) {
         float newX = elements[0][0] * vector.x + elements[0][1] * vector.y + elements[0][2];
         float newY = elements[1][0] * vector.x + elements[1][1] * vector.y + elements[1][2];
         return new Vector2f(newX, newY);
     }
 
-    // Умножение матрицы на другую матрицу
     public Matrix3f multiply(Matrix3f other) {
         float[][] result = new float[3][3];
 
-        for (int i = 0; i < 3; i++) { // Строки текущей матрицы
-            for (int j = 0; j < 3; j++) { // Столбцы другой матрицы
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 result[i][j] = elements[i][0] * other.elements[0][j]
                         + elements[i][1] * other.elements[1][j]
                         + elements[i][2] * other.elements[2][j];
@@ -35,7 +33,7 @@ public class Matrix3f {
         return new Matrix3f(result);
     }
 
-    // Транспонирование матрицы
+
     public Matrix3f transpose() {
         float[][] transposed = new float[3][3];
         for (int i = 0; i < 3; i++) {
