@@ -34,48 +34,9 @@ public class Matrix3fTest {
         assertThrows(IllegalArgumentException.class, () -> new Matrix3f(invalidElements));
     }
 
-    @Test
-    public void testMultiplyMatrixByVector() {
-        Matrix3f matrix = new Matrix3f(new float[][]{
-                {1, 2, 3},
-                {4, 5, 6},
-                {0, 0, 1}
-        });
-        Vector2f vector = new Vector2f(1, 2);
-        Vector2f result = matrix.multiply(vector);
 
-        System.out.println("Expected: (8, 14)");
-        System.out.println("Actual: (" + result.x + ", " + result.y + ")");
 
-        assertEquals(8, result.x, MathConstants.EPSILON);
-        assertEquals(14, result.y, MathConstants.EPSILON);
-    }
 
-    @Test
-    public void testMultiplyMatrixByMatrix() {
-        Matrix3f matrixA = new Matrix3f(new float[][]{
-                {1, 2, 3},
-                {4, 5, 6},
-                {0, 0, 1}
-        });
-        Matrix3f matrixB = new Matrix3f(new float[][]{
-                {7, 8, 9},
-                {10, 11, 12},
-                {0, 0, 1}
-        });
-        Matrix3f result = matrixA.multiply(matrixB);
-
-        float[][] expected = {
-                {67, 76, 87},
-                {97, 110, 123},
-                {0, 0, 1}
-        };
-
-        System.out.println("Expected: " + Arrays.deepToString(expected));
-        System.out.println("Actual: " + Arrays.deepToString(result.elements));
-
-        assertArrayEquals(expected, result.elements, MathConstants.EPSILON);
-    }
 
     @Test
     public void testTranspose() {

@@ -140,7 +140,9 @@ public class GuiController {
         graphicConveyor.resetTransformations();
     }
 
+
     private void handleMousePressed(MouseEvent event) {
+
         if (event.getButton() == MouseButton.PRIMARY) {
             isMousePressed = true;
             lastMouseX = event.getX();
@@ -149,28 +151,38 @@ public class GuiController {
     }
 
     private void handleMouseDragged(MouseEvent event) {
+
         if (isMousePressed) {
+
             double deltaX = event.getX() - lastMouseX;
             double deltaY = event.getY() - lastMouseY;
 
-            float sensitivity = 0.003f;
+            float sensitivity = 0.00001f; // Чувствительность
 
-            translateX += deltaX * sensitivity;
-            translateY += deltaY * sensitivity;
 
-            graphicConveyor.translate(translateX, translateY, translateZ);
+            rotateY += deltaX * sensitivity;
+            rotateX -= deltaY * sensitivity;
+
+
+            rotateX = Math.max(-90, Math.min(90, rotateX));
+
+
+            graphicConveyor.rotate(rotateX, rotateY, rotateZ);
+
 
             lastMouseX = event.getX();
             lastMouseY = event.getY();
         }
     }
 
-
     private void handleMouseReleased(MouseEvent event) {
+
         if (event.getButton() == MouseButton.PRIMARY) {
             isMousePressed = false;
         }
     }
+
+
 
     @FXML
     private void onOpenModelMenuItemClick() {

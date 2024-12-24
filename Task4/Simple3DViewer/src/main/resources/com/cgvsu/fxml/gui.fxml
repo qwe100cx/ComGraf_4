@@ -79,7 +79,7 @@
                 <MenuItem onAction="#onTranslateZPosClick" text="Translate Z (+)"/>
                 <MenuItem onAction="#onTranslateZNegClick" text="Translate Z (-)"/>
             </Menu>
-            <MenuItem mnemonicParsing="false" onAction="#onResetTransformationsClick" text="Reset Transformations"/>
+
         </Menu>
     </MenuBar>
 
