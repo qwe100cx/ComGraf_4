@@ -31,7 +31,6 @@ import javax.swing.*;
 
 public class GuiController {
 
-    // Константы для величин изменений
     public final float SCALE_FACTOR = 1.1F;
     public final float SCALE_DECREASE = 0.9F;
 
@@ -39,7 +38,6 @@ public class GuiController {
 
     public final float TRANSLATION = 0.8F;
 
-    // Величины изменений для масштаба, вращения и перемещения
     public float scaleX = 1.0f;
     public float scaleY = 1.0f;
     public float scaleZ = 1.0f;
@@ -68,7 +66,6 @@ public class GuiController {
     private float initialTranslateY = 0.0f;
     private float initialTranslateZ = 0.0f;
 
-    // Метод для сброса трансформаций
     @FXML
     public void onResetTransformationsClick(ActionEvent actionEvent) {
         scaleX = initialScaleX;
@@ -83,7 +80,6 @@ public class GuiController {
         translateY = initialTranslateY;
         translateZ = initialTranslateZ;
 
-        // Обновляем графический конвейер
         graphicConveyor.scale(scaleX, scaleY, scaleZ);
         graphicConveyor.rotate(rotateX, rotateY, rotateZ);
         graphicConveyor.translate(translateX, translateY, translateZ);
@@ -138,14 +134,11 @@ public class GuiController {
 
     @FXML
     public void onResetCameraClick(ActionEvent actionEvent) {
-        // Устанавливаем позицию камеры
-        camera.setPosition(new Vector3f(0, 0, 100)); // Позиция камеры может быть изменена в зависимости от размеров объекта
 
+        camera.setPosition(new Vector3f(0, 0, 100));
 
-        // Обновляем графический конвейер, если это необходимо
         graphicConveyor.resetTransformations();
     }
-
 
     private void handleMousePressed(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
@@ -160,17 +153,13 @@ public class GuiController {
             double deltaX = event.getX() - lastMouseX;
             double deltaY = event.getY() - lastMouseY;
 
-            // Уменьшите чувствительность для более точного управления
-            float sensitivity = 0.1f;
+            float sensitivity = 0.003f;
 
-            // Обновляем трансляцию по осям X и Y
             translateX += deltaX * sensitivity;
-            translateY -= deltaY * sensitivity; // Инвертируем Y, чтобы движение соответствовало движению мыши
+            translateY += deltaY * sensitivity;
 
-            // Обновляем графический конвейер с новыми значениями трансляции
             graphicConveyor.translate(translateX, translateY, translateZ);
 
-            // Обновляем последние координаты мыши
             lastMouseX = event.getX();
             lastMouseY = event.getY();
         }
@@ -214,7 +203,7 @@ public class GuiController {
         if (model == null || model.vertices.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Model is empty or null, cannot save.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            // Диалоговое окно для выбора пути сохранения файла
+
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save Model");
             fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("OBJ Files", "obj"));
@@ -233,24 +222,18 @@ public class GuiController {
     public Model applyTransformationsToModel(Model originalModel, GraphicConveyor graphicConveyor) {
         Model transformedModel = new Model();
 
-        // Получаем матрицу преобразования из GraphicConveyor
         Matrix4f transformationMatrix = graphicConveyor.getTransformationMatrix();
 
-        // Применяем преобразования ко всем вершинам и сохраняем их в новую модель
         for (int i = 0; i < originalModel.vertices.size(); i++) {
             Vector3f vertex = originalModel.vertices.get(i);
 
-            // Применяем трансформацию
             Vector3f transformedVertex = transformationMatrix.multiply(vertex);
 
-            // Преобразуем локальные координаты в мировые с использованием GraphicConveyor
             Vector3f worldCoordinates = graphicConveyor.toWorldCoordinates(transformedVertex);
 
-            // Добавляем преобразованную вершину в новую модель
             transformedModel.vertices.add(worldCoordinates);
         }
 
-        // Копируем другие данные модели
         transformedModel.textureVertices = originalModel.textureVertices;
         transformedModel.normals = originalModel.normals;
         transformedModel.polygons = originalModel.polygons;
@@ -304,15 +287,12 @@ public class GuiController {
             double deltaX = event.getX() - lastMouseX;
             double deltaY = event.getY() - lastMouseY;
 
-            // Обновляем трансформации в зависимости от перемещения мыши
-            translateX += deltaX * TRANSLATION; // Перемещение по оси X
-            translateY -= deltaY * TRANSLATION; // Перемещение по оси Y (инвертируем, чтобы движение мыши совпадало с движением объекта)
+            translateX += deltaX * TRANSLATION;
+            translateY -= deltaY * TRANSLATION;
 
-            // Обновляем последние координаты мыши
             lastMouseX = event.getX();
             lastMouseY = event.getY();
 
-            // Применяем трансформации к графическому конвейеру
             graphicConveyor.translate(translateX, translateY, translateZ);
         }
     }
@@ -330,7 +310,6 @@ public class GuiController {
         Platform.exit();
     }
 
-    // Применение изменения масштаба
     public void onScaleUpClick(ActionEvent actionEvent) {
         scaleX *= SCALE_FACTOR;
         scaleY *= SCALE_FACTOR;
