@@ -50,6 +50,7 @@
                     <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="S"/>
                 </accelerator>
             </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#onResetCameraClick" text="Reset Camera"/> <!-- Новая кнопка для сброса камеры -->
         </Menu>
         <Menu mnemonicParsing="false" text="Transformations">
             <MenuItem mnemonicParsing="false" onAction="#onScaleUpClick" text="Scale Up">
@@ -64,7 +65,8 @@
             </MenuItem>
             <Menu mnemonicParsing="false" text="Rotate">
                 <MenuItem onAction="#onRotateXPosClick" text="Rotate X (+)"/>
-                <MenuItem onAction="#onRotateXNegClick" text="Rotate X (-)"/><MenuItem onAction="#onRotateYPosClick" text="Rotate Y (+)"/>
+                <MenuItem onAction="#onRotateXNegClick" text="Rotate X (-)"/>
+                <MenuItem onAction="#onRotateYPosClick" text="Rotate Y (+)"/>
                 <MenuItem onAction="#onRotateYNegClick" text="Rotate Y (-)"/>
                 <MenuItem onAction="#onRotateZPosClick" text="Rotate Z (+)"/>
                 <MenuItem onAction="#onRotateZNegClick" text="Rotate Z (-)"/>

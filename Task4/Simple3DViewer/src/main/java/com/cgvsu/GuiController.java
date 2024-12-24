@@ -32,29 +32,29 @@ import javax.swing.*;
 public class GuiController {
 
     // Константы для величин изменений
-    final private float SCALE_FACTOR = 1.1F;
-    final private float SCALE_DECREASE = 0.9F;
+    public final float SCALE_FACTOR = 1.1F;
+    public final float SCALE_DECREASE = 0.9F;
 
     final private float ROTATE_ANGLE = 10.0F;
 
-    final private float TRANSLATION = 0.8F;
+    public final float TRANSLATION = 0.8F;
 
     // Величины изменений для масштаба, вращения и перемещения
-    private float scaleX = 1.0f;
-    private float scaleY = 1.0f;
-    private float scaleZ = 1.0f;
+    public float scaleX = 1.0f;
+    public float scaleY = 1.0f;
+    public float scaleZ = 1.0f;
 
-    private float rotateX = 0.0f;
-    private float rotateY = 0.0f;
-    private float rotateZ = 0.0f;
+    public float rotateX = 0.0f;
+    public float rotateY = 0.0f;
+    public float rotateZ = 0.0f;
 
-    private float translateX = 0.0f;
+    public float translateX = 0.0f;
     private float translateY = 0.0f;
     private float translateZ = 0.0f;
 
-    private boolean isMousePressed = false;
-    private double lastMouseX;
-    private double lastMouseY;
+    public boolean isMousePressed = false;
+    public double lastMouseX;
+    public double lastMouseY;
 
     private float initialScaleX = 1.0f;
     private float initialScaleY = 1.0f;
@@ -89,9 +89,6 @@ public class GuiController {
         graphicConveyor.translate(translateX, translateY, translateZ);
     }
 
-// Остальные методы остаются без изменений//
-    //
-    /////////////////////
 
     @FXML
     AnchorPane anchorPane;
@@ -103,7 +100,7 @@ public class GuiController {
 
     private GraphicConveyor graphicConveyor = new GraphicConveyor();
 
-    private Camera camera = new Camera(
+    public Camera camera = new Camera(
             new Vector3f(0, 00, 100),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
@@ -111,7 +108,7 @@ public class GuiController {
     private Timeline timeline;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
 
@@ -139,6 +136,17 @@ public class GuiController {
 
     }
 
+    @FXML
+    public void onResetCameraClick(ActionEvent actionEvent) {
+        // Устанавливаем позицию камеры
+        camera.setPosition(new Vector3f(0, 0, 100)); // Позиция камеры может быть изменена в зависимости от размеров объекта
+
+
+        // Обновляем графический конвейер, если это необходимо
+        graphicConveyor.resetTransformations();
+    }
+
+
     private void handleMousePressed(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             isMousePressed = true;
@@ -152,16 +160,15 @@ public class GuiController {
             double deltaX = event.getX() - lastMouseX;
             double deltaY = event.getY() - lastMouseY;
 
-            // Вращение камеры
-            rotateY += deltaX * 0.00001; // Увеличьте множитель для регулировки чувствительности
-            rotateX -= deltaY * 0.00001; // Увеличьте множитель для регулировки чувствительности
+            // Уменьшите чувствительность для более точного управления
+            float sensitivity = 0.1f;
 
-            // Ограничение вращения по оси X, чтобы избежать переворота камеры
-            if (rotateX > 89.0f) rotateX = 89.0f;
-            if (rotateX < -89.0f) rotateX = -89.0f;
+            // Обновляем трансляцию по осям X и Y
+            translateX += deltaX * sensitivity;
+            translateY -= deltaY * sensitivity; // Инвертируем Y, чтобы движение соответствовало движению мыши
 
-            // Обновляем вращение графического конвейера
-            graphicConveyor.rotate(rotateX, rotateY, rotateZ);
+            // Обновляем графический конвейер с новыми значениями трансляции
+            graphicConveyor.translate(translateX, translateY, translateZ);
 
             // Обновляем последние координаты мыши
             lastMouseX = event.getX();
@@ -280,6 +287,34 @@ public class GuiController {
     @FXML
     public void handleCameraDown(ActionEvent actionEvent) {
         camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
+    }
+
+    @FXML
+    private void onMousePressed(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            isMousePressed = true;
+            lastMouseX = event.getX();
+            lastMouseY = event.getY();
+        }
+    }
+
+    @FXML
+    private void onMouseDragged(MouseEvent event) {
+        if (isMousePressed) {
+            double deltaX = event.getX() - lastMouseX;
+            double deltaY = event.getY() - lastMouseY;
+
+            // Обновляем трансформации в зависимости от перемещения мыши
+            translateX += deltaX * TRANSLATION; // Перемещение по оси X
+            translateY -= deltaY * TRANSLATION; // Перемещение по оси Y (инвертируем, чтобы движение мыши совпадало с движением объекта)
+
+            // Обновляем последние координаты мыши
+            lastMouseX = event.getX();
+            lastMouseY = event.getY();
+
+            // Применяем трансформации к графическому конвейеру
+            graphicConveyor.translate(translateX, translateY, translateZ);
+        }
     }
 
     public void onSaveWithTransformationClick(ActionEvent actionEvent) {
