@@ -4,7 +4,7 @@ module com.cgvsu {
     requires vecmath;
     requires java.desktop;
 
-    requires junit; // Обратите внимание, что для JUnit 5 нужно использовать junit.jupiter.api
+    requires junit;
 
     opens com.cgvsu to javafx.fxml; // Открываем пакет com.cgvsu для JavaFX
     opens com.cgvsu.math to junit; // Открываем пакет com.cgvsu.math для JUnit
