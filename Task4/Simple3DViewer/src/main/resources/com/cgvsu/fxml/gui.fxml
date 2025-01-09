@@ -40,19 +40,7 @@
                     <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="RIGHT"/>
                 </accelerator>
             </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraUp" text="Up">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="W"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#handleCameraDown" text="Down">
-                <accelerator>
-                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="S"/>
-                </accelerator>
-            </MenuItem>
-            <MenuItem mnemonicParsing="false" onAction="#onResetCameraClick" text="Reset Camera"/> <!-- Новая кнопка для сброса камеры -->
-        </Menu>
-        <Menu mnemonicParsing="false" text="Transformations">
+            <!-- Scale Up и Scale Down перемещены сюда -->
             <MenuItem mnemonicParsing="false" onAction="#onScaleUpClick" text="Scale Up">
                 <accelerator>
                     <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="U"/>
@@ -61,6 +49,20 @@
             <MenuItem mnemonicParsing="false" onAction="#onScaleDownClick" text="Scale Down">
                 <accelerator>
                     <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="D"/>
+                </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#onResetCameraClick" text="Reset Camera"/> <!-- Новая кнопка для сброса камеры -->
+        </Menu>
+        <Menu mnemonicParsing="false" text="Transformations">
+            <!-- Функции Up и Down перемещены сюда -->
+            <MenuItem mnemonicParsing="false" onAction="#handleCameraUp" text="Stretch Up">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="W"/>
+                </accelerator>
+            </MenuItem>
+            <MenuItem mnemonicParsing="false" onAction="#handleCameraDown" text="Stretch Down">
+                <accelerator>
+                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="S"/>
                 </accelerator>
             </MenuItem>
             <Menu mnemonicParsing="false" text="Rotate">
@@ -79,7 +81,6 @@
                 <MenuItem onAction="#onTranslateZPosClick" text="Translate Z (+)"/>
                 <MenuItem onAction="#onTranslateZNegClick" text="Translate Z (-)"/>
             </Menu>
-
         </Menu>
     </MenuBar>
 

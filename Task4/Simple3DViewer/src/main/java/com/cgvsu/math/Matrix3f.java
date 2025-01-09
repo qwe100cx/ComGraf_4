@@ -13,6 +13,7 @@ public class Matrix3f {
         }
         this.elements = elements;
     }
+
     // Умножение матрицы на вектор-столбец
     public Vector2f multiply(Vector2f vector) {
         float newX = elements[0][0] * vector.x + elements[0][1] * vector.y + elements[0][2];
@@ -21,7 +22,6 @@ public class Matrix3f {
     }
 
     // Умножение матрицы на другую матрицу
-
     public Matrix3f multiply(Matrix3f other) {
         float[][] result = new float[3][3];
 

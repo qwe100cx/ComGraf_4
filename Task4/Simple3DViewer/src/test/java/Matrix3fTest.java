@@ -34,10 +34,6 @@ public class Matrix3fTest {
         assertThrows(IllegalArgumentException.class, () -> new Matrix3f(invalidElements));
     }
 
-
-
-
-
     @Test
     public void testTranspose() {
         Matrix3f matrix = new Matrix3f(new float[][]{
